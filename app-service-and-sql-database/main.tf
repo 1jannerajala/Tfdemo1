@@ -1,20 +1,19 @@
-resource "azurerm_resource_group" "RG-Terraform" {
-  name     = "terraform-resource-group"
+resource "azurerm_resource_group" "example" {
+  name     = "api-rg-pro"
   location = "West Europe"
 }
 
-resource "azurerm_service_plan" "ASP-TerraForm" {
-  name                = "terraform-appserviceplan"
-  location            = azurerm_resource_group.RG-Terraform.location
-  resource_group_name = azurerm_resource_group.RG-Terraform.name
-  os_type = "Windows"
+resource "azurerm_app_service_plan" "example" {
+  name                = "api-appserviceplan-pro"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+
   sku {
     tier = "Standard"
     size = "S1"
   }
 }
-
-resource "azurerm_service_plan" "AS-Terraform" {
+resource "azurerm_app_service_plan" "AS-Terraform" {
   name                = "app-service-terraform"
   location            = azurerm_resource_group.RG-Terraform.location
   resource_group_name = azurerm_resource_group.RG-Terraform.name
