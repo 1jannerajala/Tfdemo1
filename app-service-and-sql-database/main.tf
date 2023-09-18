@@ -46,11 +46,4 @@ resource "azurerm_mssql_server" "test" {
 
 resource "azurerm_mssql_database" "test" {
   name                = "terraform-sqldatabase"
-  resource_group_name = azurerm_resource_group.RG-Terraform.name
-  location            = azurerm_resource_group.RG-Terraform.location
-  server_name         = azurerm_sql_server.test.name
-
-  tags = {
-    environment = "production"
-  }
-}
+  server_id           = "azurerm_mssql_server.test.id
