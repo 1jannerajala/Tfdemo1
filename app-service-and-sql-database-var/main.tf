@@ -30,7 +30,7 @@ resource "azurerm_service_plan" "ASP-Terraform" {
     type  = "SQLServer"
     value = "Server=tcp:${azurerm_sql_server.test.fully_qualified_domain_name} Database=${azurerm_sql_database.test.name};User ID=${azurerm_sql_server.test.administrator_login};Password=${azurerm_sql_server.test.administrator_login_password};Trusted_Connection=False;Encrypt=True;"
   }
-}
+
 
 resource "azurerm_mssql_server" "test" {
   name                         = "terraform-sqlserver"
