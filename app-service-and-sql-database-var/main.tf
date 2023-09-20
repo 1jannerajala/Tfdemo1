@@ -46,17 +46,15 @@ resource "azurerm_mssql_database" "test" {
   resource_group_name = azurerm_resource_group.RG-Terraform.name
   location            = azurerm_resource_group.RG-Terraform.location
   server_name         = azurerm_sql_server.test.name
-  server_id      = azurerm_mssql_server.example.id
+  server_id      = azurerm_mssql_server.test.id
   collation      = "SQL_Latin1_General_CP1_CI_AS"
   license_type   = "LicenseIncluded"
   max_size_gb    = 4
   read_scale     = true
   sku_name       = "S0"
   zone_redundant = true
-
-  tags = {
-    foo = "bar
+}
+ 
   tags = {
     environment = "production"
   }
-}
