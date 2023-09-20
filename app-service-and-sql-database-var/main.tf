@@ -3,32 +3,28 @@ resource "azurerm_resource_group" "RG-Terraform" {
   location = "West Europe"
 }
 
-resource "azurerm_app_service_plan" "ASP-TerraForm" {
+resource "azurerm_service_plan" "ASP-TerraForm" {
   name                = "terraform-appserviceplan"
   location            = azurerm_resource_group.RG-Terraform.location
   resource_group_name = azurerm_resource_group.RG-Terraform.name
-
-  sku {
-    tier = "Standard"
-    size = "S1"
+  app_service_plan_id = azurerm_service_plan.ASP-TerraForm.id
+  os_type = "Windows"
+  sku_name = "B1" 
   }
-}
 
-resource "azurerm_app_service" "AS-Terraform" {
+resource "azurerm_service_plan" "ASP-Terraform" {
   name                = "app-service-terraform"
   location            = azurerm_resource_group.RG-Terraform.location
   resource_group_name = azurerm_resource_group.RG-Terraform.name
-  app_service_plan_id = azurerm_app_service_plan.ASP-TerraForm.id
-
+  os_type = "Windows"
+  sku_name = "B1"
+  }
   site_config {
     dotnet_framework_version = "v4.0"
     scm_type                 = "LocalGit"
   }
 
-  app_settings = {
-    "SOME_KEY" = "some-value"
-  }
-
+ 
   connection_string {
     name  = "Database"
     type  = "SQLServer"
@@ -36,7 +32,7 @@ resource "azurerm_app_service" "AS-Terraform" {
   }
 }
 
-resource "azurerm_sql_server" "test" {
+resource "azurerm_mssql_server" "test" {
   name                         = "terraform-sqlserver"
   resource_group_name          = azurerm_resource_group.RG-Terraform.name
   location                     = azurerm_resource_group.RG-Terraform.location
@@ -45,12 +41,21 @@ resource "azurerm_sql_server" "test" {
   administrator_login_password = "4-v3ry-53cr37-p455w0rd"
 }
 
-resource "azurerm_sql_database" "test" {
+resource "azurerm_mssql_database" "test" {
   name                = "terraform-sqldatabase"
   resource_group_name = azurerm_resource_group.RG-Terraform.name
   location            = azurerm_resource_group.RG-Terraform.location
   server_name         = azurerm_sql_server.test.name
+  server_id      = azurerm_mssql_server.example.id
+  collation      = "SQL_Latin1_General_CP1_CI_AS"
+  license_type   = "LicenseIncluded"
+  max_size_gb    = 4
+  read_scale     = true
+  sku_name       = "S0"
+  zone_redundant = true
 
+  tags = {
+    foo = "bar
   tags = {
     environment = "production"
   }
